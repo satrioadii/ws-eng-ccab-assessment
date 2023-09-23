@@ -15,13 +15,18 @@ export default class ChargeService extends BaseService {
   }
 
   async charge(account: string, charges: number) {
-      const balance = parseInt((await this.redisClient?.get(`${account}/balance`)) ?? "");
-      if (balance >= charges) {
-        await this.redisClient?.set(`${account}/balance`, balance - charges);
-        const remainingBalance = parseInt((await this.redisClient?.get(`${account}/balance`)) ?? "");
-        return { isAuthorized: true, remainingBalance, charges };
-      } else {
-        return { isAuthorized: false, remainingBalance: balance, charges: 0 };
+      const result = await this.redisClient?.library_charge?.charge(`${account}/balance`, charges);
+
+      if (result === undefined || result === 'false') {
+        return { isAuthorized: false }
       }
+
+      const [status, balance] = result.split(":");
+
+      if (status === 'true' && parseFloat(balance) >= 0) {
+        return { isAuthorized: true, remainingBalance: balance, charges };
+      }
+
+      return { isAuthorized: true, remainingBalance: balance, charges: charges}
   }
 }
