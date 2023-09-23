@@ -1,20 +1,19 @@
-import {createClient} from "redis";
-import {ConnectToRedis} from "../connections/redis";
+import {ConnectToRedis, DefaultRedisClientType} from "../connections/redis/redis";
 
 
 export default class BaseService {
   serviceContext: string;
   redisUrl: string;
-  redisClient?: ReturnType<typeof createClient>;
+  redisClient?: DefaultRedisClientType;
 
   constructor(serviceContext: string, url: string) {
     this.serviceContext = serviceContext;
     this.redisUrl = url;
 
-    this.ConnectToRedis();
+    this.InitRedisConnection();
   }
 
-  private async ConnectToRedis()  {
+  private async InitRedisConnection()  {
     this.redisClient = await ConnectToRedis(this.redisUrl);
   }
 }
