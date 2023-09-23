@@ -1,8 +1,13 @@
 import {performance} from "perf_hooks";
-import supertest from "supertest";
+import supertest, {SuperTest} from "supertest";
 import {buildApp} from "./app";
 
-const app = supertest(buildApp());
+let app: SuperTest<any>;
+
+async function assignApp() {
+    const appToTest = await buildApp();
+    app = supertest(appToTest);
+}
 
 async function basicLatencyTest() {
     await app.post("/reset").expect(204);
@@ -16,6 +21,7 @@ async function basicLatencyTest() {
 }
 
 async function runTests() {
+    await assignApp();
     await basicLatencyTest();
 }
 
