@@ -1,12 +1,13 @@
 import {Express} from 'express'
 
-import AllServices from "../../services/_index";
+import ChargeService from "../../services/ChargeService";
 
-const service = {
-  charge: AllServices.charge,
-}
 
 const ResetRoutes = (app: Express) => {
+  const service = {
+    charge: new ChargeService()
+  }
+
   app.post('/reset', async (req, res) => {
     try {
       const account = req.body.account ?? 'account';
