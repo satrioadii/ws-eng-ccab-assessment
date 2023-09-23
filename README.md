@@ -14,3 +14,8 @@ Getting started:
  - Run `cd backend && npm start` to start the backend.
  - Check the requests.http for some examples of how to use the backend via the API. Optionally, you can use the [VSCode Rest Client plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) to execute this file.
  - Run `cd backend && npm test` to run tests against the API to determine the current latency.
+
+
+## Step to test
+* Simply run the `Getting started` above to initiate the instance.
+* You may want to run the `npm test` to see the current latency on `backend` folder.
